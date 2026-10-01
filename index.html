@@ -1,1 +1,204 @@
+!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI與經濟研究報告 - 主題一</title>
+    <!-- 引入 Tailwind CSS 進行排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Chart.js 繪製雙Y軸圖 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入 MathJax 渲染 LaTeX 數學公式 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang TC', '微軟正黑體', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12 text-gray-800">
 
+    <div class="max-w-5xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-lg border-t-8 border-blue-800">
+        <!-- 標題區塊 -->
+        <header class="mb-10 border-b pb-6">
+            <h2 class="text-sm font-semibold text-blue-600 tracking-wider uppercase mb-2">淡江大學 專題研究報告</h2>
+            <h1 class="text-3xl md:text-4xl font-bold leading-tight text-gray-900 mb-4">
+                AI 資本深化對勞動成本與核心物價的非對稱傳導
+            </h1>
+            <p class="text-xl text-gray-600 font-light">—— 以台灣電子零組件及資通訊產業為例</p>
+        </header>
+
+        <!-- 內容區塊 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            
+            <!-- 左側：假說與機制 -->
+            <div class="space-y-8">
+                <section>
+                    <h3 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-3 mb-4">一、 研究假說 (Hypothesis)</h3>
+                    <p class="text-lg leading-relaxed text-gray-700 bg-blue-50 p-5 rounded-lg">
+                        AI 伺服器與半導體供應鏈的強勁需求，雖然大幅推升了台灣科技業的名目薪資，但由於 AI 帶動了全要素生產力（TFP）的爆發性成長，使得「單位勞動成本（Unit Labor Cost, ULC）」不升反降。因此，科技業的高薪資成長並未透過傳統的菲利浦曲線（Phillips Curve）引發成本推動型通膨（Cost-push Inflation），薪資與核心商品 CPI 呈現脫鉤現象。
+                    </p>
+                </section>
+
+                <section>
+                    <h3 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-3 mb-4">二、 經濟學理傳導機制</h3>
+                    <ul class="space-y-6 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-4 mt-1">1</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">資本偏向型技術進步</h4>
+                                <p class="leading-relaxed">AI 相關資本（$K_{AI}$）投入大幅增加，提升了科技業勞工的邊際產出（$MP_L$）。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-4 mt-1">2</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">單位勞動成本下降</h4>
+                                <p class="leading-relaxed">企業為了留才調升名目薪資（$W$），但由於總產出（$Y$）的成長幅度遠大於總薪資成本（$W \times L$），導致 $$ULC = \frac{W \times L}{Y}$$ 下降。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-4 mt-1">3</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">物價傳導阻斷</h4>
+                                <p class="leading-relaxed">製造業廠商無須透過調漲終端產品價格來轉嫁人事成本，導致「製造業高薪資成長」無法順利傳導至「核心商品類 CPI」，打破了傳統的薪資－物價螺旋。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- 右側：數據視覺化 -->
+            <div>
+                <section>
+                    <h3 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-3 mb-4">三、 數據視覺化 (雙 Y 軸圖)</h3>
+                    <p class="text-sm text-gray-500 mb-4">檢驗「通膨脫鉤假說」（下圖為呈現概念之模擬數據，實際請填入 AREMOS 數據）</p>
+                    
+                    <div class="bg-white border rounded-xl p-4 shadow-sm w-full h-[400px]">
+                        <canvas id="dualAxisChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-600 border border-gray-200">
+                        <strong>圖表分析預期：</strong><br>
+                        在 AI 投資爆發期（2023-2024），左 Y 軸的藍色長條圖（薪資年增率）顯著攀升，但右 Y 軸的紅色折線（核心商品 CPI）保持平緩甚至微降，直觀證明科技業高薪並未帶來商品類通膨。
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 設定 Chart.js 雙 Y 軸圖表
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('dualAxisChart').getContext('2d');
+            
+            // 模擬年份與季度 (2018 Q1 ~ 2024 Q2)
+            const labels = ['2018', '2019', '2020', '2021', '2022', '2023', '2024(預)'];
+            
+            // 模擬數據：電子零組件製造業經常性薪資年增率 (%)
+            const wageGrowthData = [2.5, 3.1, 2.8, 5.2, 4.8, 8.5, 9.2];
+            
+            // 模擬數據：核心商品類 CPI 年增率 (%)
+            const cpiGrowthData = [1.2, 1.0, 0.5, 1.8, 2.1, 1.1, 0.8];
+
+            const config = {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '電子零組件薪資年增率 (%) - 左軸',
+                            data: wageGrowthData,
+                            backgroundColor: 'rgba(37, 99, 235, 0.7)', // Tailwind blue-600
+                            borderColor: 'rgb(29, 78, 216)', // Tailwind blue-700
+                            borderWidth: 1,
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            label: '核心商品類 CPI 年增率 (%) - 右軸',
+                            data: cpiGrowthData,
+                            type: 'line',
+                            backgroundColor: 'rgba(220, 38, 38, 1)', // Tailwind red-600
+                            borderColor: 'rgba(220, 38, 38, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: 'rgba(220, 38, 38, 1)',
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            yAxisID: 'y1',
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Helvetica Neue', '微軟正黑體', sans-serif"
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '薪資成長與核心商品 CPI 脫鉤現象 (模擬圖)',
+                            font: {
+                                size: 16,
+                                family: "'Helvetica Neue', '微軟正黑體', sans-serif"
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: '薪資年增率 (%)'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'CPI 年增率 (%)'
+                            },
+                            grid: {
+                                drawOnChartArea: false, // 避免格線重疊
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+        });
+    </script>
+</body>
+</html>
+```eof
